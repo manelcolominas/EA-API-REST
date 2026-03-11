@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Organization, { IOrganizationModel, IOrganization } from '../models/organization';
+import Organization, { IOrganizationModel, IOrganization } from '../models/restaurant';
 
 const createOrganization = async (data: Partial<IOrganization>): Promise<IOrganizationModel> => {
     const organization = new Organization({

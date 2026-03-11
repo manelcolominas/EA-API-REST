@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import User, { IUserModel, IUser } from '../models/user';
-import Organization from '../models/organization';
+import User, { IUserModel, IUser } from '../models/customer';
+import Organization from '../models/restaurant';
 
 const createUser = async (data: Partial<IUser>): Promise<IUserModel> => {
     const user = new User({

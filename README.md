@@ -104,14 +104,14 @@ src/
 ├── middleware/
 │   └── joi.ts             # Payload validation with Joi + schemas for each entity
 ├── models/
-│   ├── organization.ts    # Mongoose Schema/Model for Organization
-│   └── user.ts            # Mongoose Schema/Model for User
+│   ├── restaurant.ts    # Mongoose Schema/Model for Organization
+│   └── customer.ts            # Mongoose Schema/Model for User
 ├── controllers/
-│   ├── organization.ts    # CRUD logic for Organization
-│   └── user.ts            # CRUD logic for User
+│   ├── restaurant.ts    # CRUD logic for Organization
+│   └── customer.ts            # CRUD logic for User
 └── routes/
-    ├── organization.ts    # Route definitions for Organization
-    └── user.ts            # Route definitions for User
+    ├── restaurant.ts    # Route definitions for Organization
+    └── customer.ts            # Route definitions for User
 ```
 
 ---
@@ -156,7 +156,7 @@ Contains two exports:
 
 ---
 
-### `src/models/organization.ts`
+### `src/models/restaurant.ts`
 Defines the Mongoose model `Organization` with the following structure:
 
 | Field | Type | Required |
@@ -168,7 +168,7 @@ Exported TypeScript interfaces: `IOrganization`, `IOrganizationModel`.
 
 ---
 
-### `src/models/user.ts`
+### `src/models/customer.ts`
 Defines the Mongoose model `User` with the following structure:
 
 | Field | Type | Required | Notes |
@@ -185,17 +185,17 @@ Exported TypeScript interfaces: `IUser`, `IUserModel`.
 
 ---
 
-### `src/services/organization.ts` and `src/services/user.ts`
+### `src/services/restaurant.ts` and `src/services/customer.ts`
 Contain the **business logic** and direct calls to Mongoose. This is the layer responsible for interacting with data persistence.
 
 ---
 
-### `src/controllers/organization.ts` and `src/controllers/user.ts`
+### `src/controllers/restaurant.ts` and `src/controllers/customer.ts`
 Manage the HTTP protocol. They receive data from the `Request`, call the corresponding **Service** layer, and return the response in the `Response` with the appropriate status code. They do not know the implementation details of the database.
 
 ---
 
-### `src/routes/organization.ts` and `src/routes/user.ts`
+### `src/routes/restaurant.ts` and `src/routes/customer.ts`
 Register the endpoints for each resource with their corresponding Joi validation middlewares and delegate the logic to the controller.
 
 ---

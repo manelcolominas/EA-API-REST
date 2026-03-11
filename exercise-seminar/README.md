@@ -53,10 +53,10 @@ Debes crear un endpoint específico:
 ---
 
 ## 📂 Archivos clave a modificar
-- 📄 `src/models/organization.ts`: Para definir la relación (ya sea virtual o por array).
-- 📄 `src/services/organization.ts`: Para añadir la lógica de negocio y filtros.
-- 📄 `src/controllers/organization.ts`: Para recibir la petición y llamar al servicio.
-- 📄 `src/routes/organization.ts`: Para registrar la nueva ruta y su documentación Swagger.
+- 📄 `src/models/restaurant.ts`: Para definir la relación (ya sea virtual o por array).
+- 📄 `src/services/restaurant.ts`: Para añadir la lógica de negocio y filtros.
+- 📄 `src/controllers/restaurant.ts`: Para recibir la petición y llamar al servicio.
+- 📄 `src/routes/restaurant.ts`: Para registrar la nueva ruta y su documentación Swagger.
 
 ---
 
