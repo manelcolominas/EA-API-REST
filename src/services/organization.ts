@@ -1,37 +1,46 @@
 import mongoose from 'mongoose';
-import Organization, { IOrganizationModel, IOrganization } from '../models/organization';
+import { OrganizationModel, IOrganization } from '../models/organization';
 
-const createOrganization = async (data: Partial<IOrganization>): Promise<IOrganizationModel> => {
-    const organization = new Organization({
+const createOrganization = (data: Partial<IOrganization>): Promise<IOrganization> => {
+    const organization = new OrganizationModel({
         _id: new mongoose.Types.ObjectId(),
+        users: [],
         ...data
     });
-    return await organization.save();
+    return organization.save();
 };
 
-const getOrganization = async (organizationId: string): Promise<IOrganizationModel | null> => {
-    return await Organization.findById(organizationId);
+const getOrganization = async (organizationId: string): Promise<IOrganization | null> => {
+    return await OrganizationModel.findById(organizationId);
 };
 
-const getAllOrganizations = async (): Promise<IOrganizationModel[]> => {
-    return await Organization.find();
+const getAllOrganizations = async (): Promise<IOrganization[]> => {
+    return await OrganizationModel.find();
 };
 
-const updateOrganization = async (organizationId: string, data: Partial<IOrganization>): Promise<IOrganizationModel | null> => {
-    const organization = await Organization.findById(organizationId);
+const updateOrganization = async (organizationId: string, data: Partial<IOrganization>): Promise<IOrganization | null> => {
+    const organization = await OrganizationModel.findById(organizationId);
     if (organization) {
         organization.set(data);
-        return await organization.save();
+        return organization.save();
     }
     return null;
 };
 
-const deleteOrganization = async (organizationId: string): Promise<IOrganizationModel | null> => {
-    return await Organization.findByIdAndDelete(organizationId);
+const deleteOrganization = async (organizationId: string): Promise<IOrganization | null> => {
+    return await OrganizationModel.findByIdAndDelete(organizationId);
 };
 
-const getOrganizationWithUsers = async (organizationId: string): Promise<IOrganizationModel | null> => {
-    return await Organization.findById(organizationId).populate('users', '-organization').lean();
+const getOrganizationWithUsers = async (organizationId: string): Promise<IOrganization | null> => {
+    return await OrganizationModel.findById(organizationId).populate('users', '-organization -password -createdAt -updatedAt').lean();
 };
 
-export default { createOrganization, getOrganization, getAllOrganizations, updateOrganization, deleteOrganization, getOrganizationWithUsers };
+const removeUserFromOrganization = async (organizationId: string, userId: string): Promise<IOrganization | null> => {
+    return await OrganizationModel.findByIdAndUpdate(
+        organizationId,
+        { $pull: { users: userId } },
+        { new: true }
+    );
+};
+
+export default { createOrganization, getOrganization, getAllOrganizations, updateOrganization, deleteOrganization, getOrganizationWithUsers, removeUserFromOrganization };

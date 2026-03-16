@@ -64,4 +64,15 @@ const getOrganizationWithUsers = async (req: Request, res: Response, next: NextF
     }
 };
 
-export default { createOrganization, readOrganization, readAll, updateOrganization, deleteOrganization, getOrganizationWithUsers: getOrganizationWithUsers };
+const removeUserFromOrganization = async (req: Request, res: Response, next: NextFunction) => {
+    const { organizationId, userId } = req.params;
+
+    try {
+        const organization = await OrganizationService.removeUserFromOrganization(organizationId, userId);
+        return organization ? res.status(200).json(organization) : res.status(404).json({ message: 'Organization not found' });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+};
+
+export default { createOrganization, readOrganization, readAll, updateOrganization, deleteOrganization, getOrganizationWithUsers, removeUserFromOrganization };
