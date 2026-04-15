@@ -1,16 +1,16 @@
 import mongoose from 'mongoose';
-import User, { IUserModel, IUser } from '../models/user';
-import Organization from '../models/organization';
+import { UserModel, IUser } from '../models/user';
+import { OrganizationModel } from '../models/organization';
 
-const createUser = async (data: Partial<IUser>): Promise<IUserModel> => {
-    const user = new User({
+const createUser = async (data: Partial<IUser>): Promise<IUser> => {
+    const user = new UserModel({
         _id: new mongoose.Types.ObjectId(),
         ...data
     });
     const savedUser = await user.save();
 
     // Afegir l'usuari a l'organització
-    await Organization.findByIdAndUpdate(
+    await OrganizationModel.findByIdAndUpdate(
         savedUser.organization,
         { $addToSet: { users: savedUser._id } }
     );
@@ -18,26 +18,28 @@ const createUser = async (data: Partial<IUser>): Promise<IUserModel> => {
     return savedUser;
 };
 
-const getUser = async (userId: string): Promise<IUserModel | null> => {
-    return await User.findById(userId).populate('organization', 'name');
+const getUser = async (userId: string): Promise<IUser | null> => {
+    const user = await UserModel.findById(userId).populate('organization', 'name');
+    return user;
 };
 
-const getAllUsers = async (): Promise<IUserModel[]> => {
-    return await User.find().populate('organization', 'name');
+const getAllUsers = async (): Promise<IUser[]> => {
+    const users = await UserModel.find().populate('organization', 'name');
+    return users;
 };
 
-const updateUser = async (userId: string, data: Partial<IUser>): Promise<IUserModel | null> => {
-    const user = await User.findById(userId);
+const updateUser = async (userId: string, data: Partial<IUser>): Promise<IUser | null> => {
+    const user = await UserModel.findById(userId);
     if (user) {
         // Si l'organització canvia, actualitzar les llistes d'usuaris a les organitzacions
         if (data.organization && data.organization.toString() !== user.organization.toString()) {
             // Eliminar de l'antiga organització
-            await Organization.findByIdAndUpdate(user.organization, {
+            await OrganizationModel.findByIdAndUpdate(user.organization, {
                 $pull: { users: user._id }
             });
 
             // Afegir a la nova organització
-            await Organization.findByIdAndUpdate(data.organization, {
+            await OrganizationModel.findByIdAndUpdate(data.organization, {
                 $addToSet: { users: user._id }
             });
         }
@@ -48,8 +50,8 @@ const updateUser = async (userId: string, data: Partial<IUser>): Promise<IUserMo
     return null;
 };
 
-const deleteUser = async (userId: string): Promise<IUserModel | null> => {
-    return await User.findByIdAndDelete(userId);
+const deleteUser = async (userId: string): Promise<IUser | null> => {
+    return await UserModel.findByIdAndDelete(userId);
 };
 
 export default { createUser, getUser, getAllUsers, updateUser, deleteUser };

@@ -180,4 +180,35 @@ router.put('/:organizationId', ValidateJoi(Schemas.organization.update), control
  */
 router.delete('/:organizationId', controller.deleteOrganization);
 
+/**
+ * @openapi
+ * /organizations/{organizationId}/users/{userId}:
+ *   delete:
+ *     summary: Removes a user from an organization
+ *     tags: [Organizations]
+ *     parameters:
+ *       - in: path
+ *         name: organizationId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The organization's ObjectId
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user's ObjectId
+ *     responses:
+ *       200:
+ *         description: User removed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Organization'
+ *       404:
+ *         description: Organization not found
+ */
+router.delete('/:organizationId/users/:userId', controller.removeUserFromOrganization);
+
 export default router;

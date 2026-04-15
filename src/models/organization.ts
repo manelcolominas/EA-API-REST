@@ -1,11 +1,11 @@
-import mongoose, { Document, Schema, Types } from 'mongoose';
+import mongoose, { Document, model, Schema, Types } from 'mongoose';
+import { IUser } from './user';
 
 export interface IOrganization {
+    _id: Types.ObjectId;
     name: string;
     users: Types.ObjectId[];
 }
-
-export interface IOrganizationModel extends IOrganization, Document {}
 
 const OrganizationSchema: Schema = new Schema(
     {
@@ -17,4 +17,4 @@ const OrganizationSchema: Schema = new Schema(
     }
 );
 
-export default mongoose.model<IOrganizationModel>('Organization', OrganizationSchema);
+export const OrganizationModel = model<IOrganization>('Organization', OrganizationSchema);

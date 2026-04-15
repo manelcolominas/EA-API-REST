@@ -6,6 +6,7 @@ import { config } from './config/config';
 import Logging from './library/logging';
 import organizationRoutes from './routes/organization';
 import userRoutes from './routes/user';
+import { insertData } from './utils/dataSeeder';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
 
@@ -16,6 +17,7 @@ mongoose
     .connect(config.mongo.url, { retryWrites: true, w: 'majority' })
     .then(() => {
         Logging.info('Mongo connected successfully.');
+        insertData();
         StartServer();
     })
     .catch((error) => Logging.error(error));
