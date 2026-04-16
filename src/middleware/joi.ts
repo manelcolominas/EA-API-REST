@@ -2,6 +2,7 @@ import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
 import { IOrganization } from '../models/organization';
 import { IUser } from '../models/user';
+import { IRecord } from '../models/record';
 import Logging from '../library/logging';
 
 export const ValidateJoi = (schema: ObjectSchema) => {
@@ -12,7 +13,6 @@ export const ValidateJoi = (schema: ObjectSchema) => {
             next();
         } catch (error) {
             Logging.error(error);
-
             return res.status(422).json({ error });
         }
     };
@@ -43,6 +43,19 @@ export const Schemas = {
             name: Joi.string().required(),
             email: Joi.string().email().required(),
             password: Joi.string().min(6).required()
+        })
+    },
+
+    record: {
+        create: Joi.object<IRecord>({
+            relatedEntityType: Joi.string().required(),
+            relatedEntityId: Joi.string().required(),
+            changes: Joi.array().items(
+                Joi.object({
+                    field: Joi.string().required(),
+                    previous: Joi.any().required(),
+                    current: Joi.any().required()
+                }).required())
         })
     }
 };

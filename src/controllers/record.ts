@@ -1,24 +1,21 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import UserService from '../services/user';
+import recordService from '../services/record';
 
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
-   
-
+const createRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
-       const savedUser = await UserService.createUser(req.body);
-        return res.status(201).json(savedUser);
+       const savedRecord = await recordService.createRecord(req.body);
+        return res.status(201).json(savedRecord);
     } catch (error) {
         return res.status(500).json({ error });
     }
 };
 
-const readUser = async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.params.userId;
-
+const readRecord = async (req: Request, res: Response, next: NextFunction) => {
+    const recordId = req.params.recordId;
     try {
-        const user = await UserService.getUser(userId);
-        return user ? res.status(200).json(user) : res.status(404).json({ message: 'not found' });
+        const record = await recordService.getRecord(recordId);
+        return record ? res.status(200).json(record) : res.status(404).json({ message: 'not found' });
     } catch (error) {
         return res.status(500).json({ error });
     }
@@ -26,33 +23,21 @@ const readUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const readAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const users = await UserService.getAllUsers();
-        return res.status(200).json(users);
+        const records = await recordService.getAllRecords();
+        return res.status(200).json(records);
     } catch (error) {
         return res.status(500).json({ error });
     }
 };
 
-const updateUser = async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.params.userId;
+const deleteRecord = async (req: Request, res: Response, next: NextFunction) => {
+    const recordId = req.params.recordId;
     try {
-        const updatedUser = await UserService.updateUser(userId, req.body);
-        return updatedUser ? res.status(201).json(updatedUser) : res.status(404).json({ message: 'not found' });
+        const record = await recordService.deleteRecord(recordId);
+        return record ? res.status(201).json(record) : res.status(404).json({ message: 'not found' });
     } catch (error) {
         return res.status(500).json({ error });
     }
 };
 
-
-const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.params.userId;
-
-    try {
-        const user = await UserService.deleteUser(userId);
-        return user ? res.status(201).json(user) : res.status(404).json({ message: 'not found' });
-    } catch (error) {
-        return res.status(500).json({ error });
-    }
-};
-
-export default { createUser, readUser, readAll, updateUser, deleteUser };
+export default { createRecord, readRecord, readAll, deleteRecord };
