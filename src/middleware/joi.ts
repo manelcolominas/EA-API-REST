@@ -24,7 +24,8 @@ export const Schemas = {
             name: Joi.string().required()
         }),
         update: Joi.object<IOrganization>({
-            name: Joi.string().required()
+            name: Joi.string().optional(),
+            users: Joi.array().items(Joi.string()).optional()
         })
     },
     user: {

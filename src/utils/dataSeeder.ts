@@ -6,10 +6,13 @@ import Logging from '../library/logging';
 // Import all models
 import { OrganizationModel } from '../models/organization';
 import { UserModel } from '../models/user';
+import { RecordModel} from '../models/record';
+
 
 const modelMap: { [key: string]: mongoose.Model<any> } = {
     'organizations.json': OrganizationModel,
-    'users.json': UserModel
+    'users.json': UserModel,
+    RecordModel
 };
 
 export const insertData = async () => {
